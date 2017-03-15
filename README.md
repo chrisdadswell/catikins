@@ -1,3 +1,3 @@
 # catikins
-Colour my cat demo
+Colour my cat demo  
 A cat in a flask?
