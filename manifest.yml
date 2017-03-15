@@ -1,0 +1,8 @@
+---
+applications:
+- name: catikins
+  memory: 128M
+  timeout: 60
+  random_route: true
+  buildpack: python_buildpack
+  command: python catikins
