@@ -1,44 +1,69 @@
-import io,base64
-from flask import Flask, send_file
+#CATIKINS Flask based app
+#V1.0 - 16/03/2017
+
+import io,os,time
+from flask import Flask, send_file, jsonify
 from PIL import Image
+###############################################
+#We would never hard code values in a real app!
+
+CAT_FILE="cat1.gif"
+CAT_COLOUR=(255,255,0,128)
+
+###############################################
 
 app = Flask(__name__)
+app.config["CAT_NAME"]="No-Name"
+app.config.from_pyfile('settings.cfg')
+
+port=int(os.getenv("PORT",5002))
+
+@app.after_request
+def add_header(response):
+  response.headers['Cache-Control'] = 'no-store'
+  return response
+
+
 
 @app.route("/")
 def hello():
   return "Hello World!"
 
+
+
 @app.route("/cat")
 def cat():
-  return send_file('cat1.gif', mimetype='image/gif')
+  return send_file(CAT_FILE, mimetype='image/gif')
+
+
+
+@app.route("/catinfo")
+def catinfo():
+  im=Image.open(CAT_FILE)
+  (fmode,fino,fdev,fnlink,fuid,fgid,fsize,fatime,fmtime,fctime)=os.stat(CAT_FILE)
+  mode=im.mode
+  width=im.width
+  height=im.height
+  catname=app.config["CAT_NAME"]
+  now=time.strftime("%c")
+  infoset={"width":width,"height":height,"mode":mode,"bytes":fsize,"name":catname,"timedate":now}
+  return jsonify(infoset)
+
 
 @app.route("/colourcat")
 def colourcat():
-  im=Image.open("cat1.gif").convert('RGBA')
-  width=im.width
-  height=im.height
+  im=Image.open(CAT_FILE).convert('RGBA')
   
   overlay=Image.new('RGBA',im.size,(255,0,0,128))
   out=Image.alpha_composite(im,overlay)
-
-  out.rotate(45).save('cat2.gif')
-  return send_file('cat2.gif', mimetype='image/gif')
-
-@app.route("/colourcat2")
-def colourcat2():
-  im=Image.open("cat1.gif").convert('RGBA')
-  
-  overlay=Image.new('RGBA',im.size,(255,0,0,128))
-  out=Image.alpha_composite(im,overlay)
-
-  out.rotate(45)
    
   bytes=io.BytesIO()
-  out.save(bytes,format='PNG')
+  out.rotate(10).save(bytes,format='PNG')
   bytes.seek(0) 
   return send_file(bytes,mimetype='image/png')
-#  return '<html><body><src="data:image/png;base64,'+base64.b64encode(outdata)+'" /></body></html>'
+
+
 
 if __name__ == "__main__":
-  app.run()
+  app.run(host='0.0.0.0',port=port)
 
