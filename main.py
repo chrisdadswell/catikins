@@ -10,6 +10,10 @@ from PIL import Image
 CAT_FILE="cat1.gif"
 CAT_COLOUR=(255,255,0,128)
 
+# RED = 255,0,0
+# GREEN = 0,128,0
+# BLUE = 0,0,255
+
 ###############################################
 
 app = Flask(__name__)
