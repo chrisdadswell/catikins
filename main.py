@@ -10,14 +10,15 @@ from PIL import Image
 CAT_FILE="cat1.gif"
 CAT_COLOUR=(255,255,0,128)
 
-# RED = 255,0,0
-# GREEN = 0,128,0
-# BLUE = 0,0,255
+# RED = 255,0,0,128
+# GREEN = 0,128,0,128
+# BLUE = 0,0,255,128
 
 ###############################################
 
 app = Flask(__name__)
 app.config["CAT_NAME"]="No-Name"
+#app.config["CAT_COLOUR"]="255,0,0,128"
 app.config.from_pyfile('settings.cfg')
 
 port=int(os.getenv("PORT",5002))
@@ -59,6 +60,7 @@ def colourcat():
   im=Image.open(CAT_FILE).convert('RGBA')
   
   overlay=Image.new('RGBA',im.size,(255,0,0,128))
+  #overlay=Image.new('RGBA',im.size,(CAT_COLOUR))
   out=Image.alpha_composite(im,overlay)
    
   bytes=io.BytesIO()
