@@ -7,12 +7,7 @@ from PIL import Image
 ###############################################
 #We would never hard code values in a real app!
 
-CAT_FILE="cat1.gif"
-#CAT_COLOUR=(255,255,0,128)
-
-# RED = 255,0,0,128
-# GREEN = 0,128,0,128
-# BLUE = 0,0,255,128
+CAT_FILE="dance.gif"
 
 ###############################################
 
