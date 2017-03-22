@@ -3,7 +3,7 @@
 
 import io,os,time
 from flask import Flask, send_file, jsonify
-from PIL import Image
+from PIL import Image, ImageFont, ImageDraw
 ###############################################
 #We would never hard code values in a real app!
 
@@ -53,14 +53,21 @@ def catinfo():
 @app.route("/colourcat")
 def colourcat():
   im=Image.open(CAT_FILE).convert('RGBA')
-  cat_colour=app.config["CAT_COLOUR"] 
+  cat_colour=app.config["CAT_COLOUR"]
+  catname=app.config["CAT_NAME"]
+  width=im.width
+  height=im.height
+
   #overlay=Image.new('RGBA',im.size,(255,0,0,128))
   overlay=Image.new('RGBA',im.size,cat_colour)
   out=Image.alpha_composite(im,overlay)
-   
+  font=ImageFont.truetype('./fonts/spleen_machine.ttf', 32)
+  draw = ImageDraw.Draw(out)
+  w, h = draw.textsize(catname,font=font)
+  draw.text(((width-w)/2,(height-h)/2),catname,(0,0,0),font=font) 
   bytes=io.BytesIO()
   out.rotate(10).save(bytes,format='PNG')
-  bytes.seek(0) 
+  bytes.seek(0)
   return send_file(bytes,mimetype='image/png')
 
 
