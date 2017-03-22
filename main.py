@@ -13,7 +13,7 @@ CAT_FILE="dance.gif"
 
 app = Flask(__name__)
 app.config["CAT_NAME"]="No-Name"
-app.config["CAT_COLOUR"]="255,0,0,128"
+app.config["CAT_COLOUR"]=(0,0,255,128)
 app.config.from_pyfile('settings.cfg')
 
 port=int(os.getenv("PORT",5002))
@@ -53,9 +53,9 @@ def catinfo():
 @app.route("/colourcat")
 def colourcat():
   im=Image.open(CAT_FILE).convert('RGBA')
-  
+  cat_colour=app.config["CAT_COLOUR"] 
   #overlay=Image.new('RGBA',im.size,(255,0,0,128))
-  overlay=Image.new('RGBA',im.size,CAT_COLOUR)
+  overlay=Image.new('RGBA',im.size,cat_colour)
   out=Image.alpha_composite(im,overlay)
    
   bytes=io.BytesIO()
