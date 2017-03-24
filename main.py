@@ -7,7 +7,7 @@ from PIL import Image, ImageFont, ImageDraw
 ###############################################
 #We would never hard code values in a real app!
 
-CAT_FILE="happy.gif"
+CAT_FILE="grumpy.gif"
 
 ###############################################
 
