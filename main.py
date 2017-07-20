@@ -9,6 +9,11 @@ from PIL import Image, ImageFont, ImageDraw
 
 CAT_FILE="dance.gif"
 
+#dance
+#grumpy
+#angry
+#happy
+
 ###############################################
 
 app = Flask(__name__)
